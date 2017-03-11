@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <stdio.h>
 
+
 #define TEXT_BUFFOR_SIZE 200
 #define MB_YESNOQUESTION MB_YESNO | MB_ICONQUESTION
 #define APP_NAME "knur app"
