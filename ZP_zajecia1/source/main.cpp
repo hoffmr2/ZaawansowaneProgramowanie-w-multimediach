@@ -38,8 +38,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
   int number = up_bound, return_message;
   char text[TEXT_BUFFOR_SIZE];
 
-  MessageBox(0,CHOOSE_NUMBER , APP_NAME, MB_OK);
+  MessageBox(nullptr,CHOOSE_NUMBER , APP_NAME, MB_OK);
   ASK_IF_NUMBER_IS_OK()
+  
 
   while (down_bound != up_bound)
   {
@@ -51,6 +52,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
     IS_CHOSSEN_NUMBER_HIGHER()
     UPDATE_BOUNDS()
   }
-  MessageBox(0, UNCORRECT_NUMBER_CHOSSEN, APP_NAME, MB_OK | MB_ICONWARNING);
+  MessageBox(nullptr, UNCORRECT_NUMBER_CHOSSEN, APP_NAME, MB_OK | MB_ICONWARNING);
   return 0;
 }
