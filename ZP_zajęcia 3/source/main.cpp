@@ -13,6 +13,7 @@
  * komputer odpowiada czy iwêksza czy mniejsza
  * 2 pola static box
  */
+#define APP_NAME "Knur"
 #define CONGRATULATIONS "Brawo zgad³eœ"
 #define ATTEMPT_NUMBER "liczba prób %d"
 #define IS_OK_DEFAULT "wpisz wartoœæ z zakresu 1 - 40"
@@ -46,6 +47,7 @@ void UpdateTohighTolowText(HWND hwndDlg, int value)
   else
     wsprintf(text, IS_OK_TOHIGH);
   SetWindowText(hwnd_tohigh_tolow, text);
+
 }
 
 void GetNumberFromTextEdit(HWND hwnd_edit_box, int& value)
@@ -57,7 +59,7 @@ void GetNumberFromTextEdit(HWND hwnd_edit_box, int& value)
 
   if(value < MIN_VALUE || value > MAX_VALUE)
   {
-    MessageBox(hwnd_edit_box, nullptr, ERROR_MESSAGE, MB_OK | MB_ICONERROR);
+    MessageBox(hwnd_edit_box, ERROR_MESSAGE, nullptr, MB_OK | MB_ICONERROR);
     Magic();
   }
  
@@ -85,7 +87,7 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 
         if (game_data->Compare(value) == true)
         {
-          MessageBox(hwndDlg, nullptr, CONGRATULATIONS, MB_OK);
+          MessageBox(hwndDlg, CONGRATULATIONS, nullptr, MB_OK);
           game_data->ResetData();
           InitControls(hwndDlg);
         }
@@ -123,10 +125,17 @@ void InitTohighTolowText(HWND hwnd_main_window)
   SetWindowText(hwnd_tohigh_tolow, text);
 }
 
+void InitEditText(HWND hwnd_main_window)
+{
+  auto hwnd_edit = GetDlgItem(hwnd_main_window, IDC_EDIT1);
+  SetWindowText(hwnd_edit, nullptr);
+}
+
 void InitControls(HWND hwnd_main_window)
 {
   InitAttemptNumberText(hwnd_main_window);
   InitTohighTolowText(hwnd_main_window);
+  InitEditText(hwnd_main_window);
 }
 
 
