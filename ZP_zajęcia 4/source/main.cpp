@@ -121,34 +121,86 @@ void SymbolsInCrossDownUp(int &empty, int &circles, int& crosses)
   }
 }
 
+void EmplaceInUpLeftCorner()
+{
+  game_table[0][0] = INT_CIRCLE;
+  wsprintf(sz_text, CIRCLE);
+  SetWindowText(buttons[0], sz_text);
+}
+
+void EmplaceInDownLeftCorner()
+{
+  game_table[2][0] = INT_CIRCLE;
+  wsprintf(sz_text, CIRCLE);
+  SetWindowText(buttons[6], sz_text);
+}
+
+void EmplaceInUpRightCorner()
+{
+  game_table[0][2] = INT_CIRCLE;
+  wsprintf(sz_text, CIRCLE);
+  SetWindowText(buttons[2], sz_text);
+}
+
+void EmplaceInDownRightCorner()
+{
+  game_table[2][2] = INT_CIRCLE;
+  wsprintf(sz_text, CIRCLE);
+  SetWindowText(buttons[8], sz_text);
+}
+
 bool EmplaceInCorner()
 {
+  int empty, circles, crosses, first_row =0,last_row =2;
+  SymbolsInRow(first_row, empty, circles, crosses);
+  if(circles == first_row)
+  {
+    if (game_table[0][0] == 0)
+    {
+      EmplaceInUpLeftCorner();
+      return true;
+    }
+    if (game_table[0][2] == 0)
+    {
+      EmplaceInUpRightCorner();
+      return true;
+    }
+
+  }
+
+  SymbolsInRow(last_row, empty, circles, crosses);
+  if (circles == first_row)
+  {
+    if (game_table[2][0] == 0)
+    {
+      EmplaceInDownLeftCorner();
+      return true;
+    }
+    if (game_table[0][2] == 0)
+    {
+      EmplaceInDownRightCorner();
+      return true;
+    }
+
+  }
   if(game_table[2][2] == 0)
   {
-    game_table[2][2] = INT_CIRCLE;
-    wsprintf(sz_text, CIRCLE);
-    SetWindowText(buttons[8], sz_text);
+    EmplaceInDownRightCorner();
     return true;
   }
   if (game_table[0][2] == 0)
   {
-    game_table[0][2] = INT_CIRCLE;
-    wsprintf(sz_text, CIRCLE);
-    SetWindowText(buttons[2], sz_text);
+    EmplaceInUpRightCorner();
     return true;
   }
   if (game_table[2][0] == 0)
   {
-    game_table[2][0] = INT_CIRCLE;
-    wsprintf(sz_text, CIRCLE);
-    SetWindowText(buttons[6], sz_text);
+    EmplaceInDownLeftCorner();
     return true;
   }
   if (game_table[0][0] == 0)
   {
-    game_table[0][0] = INT_CIRCLE;
-    wsprintf(sz_text, CIRCLE);
-    SetWindowText(buttons[0], sz_text);
+    EmplaceInUpLeftCorner();
     return true;
   }
   return false;
@@ -215,6 +267,38 @@ void EmplaceAnyWhere()
     }
 }
 
+bool EmplaceInCrossUpDown()
+{
+
+  for (int i = 0; i < TABLE_SIZE; ++i)
+  {
+    if(game_table[i][i] ==0)
+    {
+      game_table[i][i] = INT_CIRCLE;
+      wsprintf(sz_text, CIRCLE);
+      SetWindowText(buttons[3 * i + i % 3], sz_text);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool EmplaceInCrossDownUp()
+{
+  
+  for (int i = 0, j = 2; i < TABLE_SIZE; ++i, --j)
+  {
+    if (game_table[i][j] == 0)
+    {
+      game_table[i][j] = INT_CIRCLE;
+      wsprintf(sz_text, CIRCLE);
+      SetWindowText(buttons[3 * i + j % 3], sz_text);
+      return true;
+    }
+  }
+  return false;
+}
+
 
 void EmplaceByComputer()
 {
@@ -230,6 +314,17 @@ void EmplaceByComputer()
     SymbolsInRow(i, empty, circles, crosses);
     if (circles == 2 || crosses == 2)
       if (EmplaceInRow(i))return;
+  }
+  SymbolsInCrossDownUp(empty, circles, crosses);
+  if (circles == 2 || crosses == 2)
+  {
+    if (EmplaceInCrossDownUp())return;
+  }
+
+  SymbolsInCrossUpDown(empty, circles, crosses);
+  if (circles == 2 || crosses == 2)
+  {
+    if (EmplaceInCrossUpDown())return;
   }
   if (EmplaceInTheMiddle())return;
   if (EmplaceInCorner())return;
