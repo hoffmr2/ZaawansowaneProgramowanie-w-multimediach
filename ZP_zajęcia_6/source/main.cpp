@@ -7,7 +7,7 @@
 
 #define GAME_RESULT_UNKNOWN "gra w trakcie"
 #define GAME_RESULT_WINNER_CROSS "wygr¹³o krzy¿yk"
-#define GAME_RESULT_WINNER_CIRCLE "wygrta³o kó³ko"
+#define GAME_RESULT_WINNER_CIRCLE "Wygra³ Karakan"//"wygrta³o kó³ko"
 #define GAME_RESULT_DRAW "remis"
 #define GAME_STATUS_PLAYING "gra siê toczy"
 #define GAME_STATUS_STOPED "gra nieaktywna"
