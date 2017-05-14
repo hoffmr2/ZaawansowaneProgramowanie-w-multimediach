@@ -79,6 +79,15 @@ void NotePlayer::Play(double duration, std::string note)
   }
 }
 
+void NotePlayer::GetRythmValuesFormString(std::string rythm, std::vector<std::string> splited_rythm, std::vector<int>& rythm_values)
+{
+  BOOST::split(splited_rythm, rythm,boost::is_any_of( ";"), boost::token_compress_on);
+  for(int i=0;i<splited_rythm.size();++i)
+  {
+    rythm_values.push_back(std::stoi(splited_rythm[i]));
+  }
+}
+
 void NotePlayer::PlayMelody(std::string notes, std::string rythm, double tempo_bpm)
 {
   auto full_note_duration = 240/ tempo_bpm;
@@ -86,11 +95,8 @@ void NotePlayer::PlayMelody(std::string notes, std::string rythm, double tempo_b
   std::vector<std::string> splited_rythm;
   std::vector<int>rythm_values;
   BOOST::split(splited_notes, notes,boost::is_any_of( ";"), boost::token_compress_on);
-  BOOST::split(splited_rythm, rythm,boost::is_any_of( ";"), boost::token_compress_on);
-  for(int i=0;i<splited_rythm.size();++i)
-  {
-    rythm_values.push_back(std::stoi(splited_rythm[i]));
-  }
+
+  GetRythmValuesFormString(rythm, splited_rythm, rythm_values);
   if (splited_notes.size() != rythm_values.size())
     return;
 
@@ -111,7 +117,7 @@ void NotePlayer::InitTones()
   { "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#" };
 
   double ratio = pow(2.0, 1.0 / 12.0);
-  double a = 220;
+  double a = 110;
   for (int i = 0; i <= octave_number*half_tones; i++)
   {
     auto text = notes[i % 12];

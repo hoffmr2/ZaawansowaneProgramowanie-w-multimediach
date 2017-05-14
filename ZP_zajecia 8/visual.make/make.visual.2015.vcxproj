@@ -124,12 +124,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\game_data.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\note_player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\source\game_data.h" />
     <ClInclude Include="..\source\note_player.h" />
     <ClInclude Include="..\source\res.h" />
   </ItemGroup>

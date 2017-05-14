@@ -2,9 +2,7 @@
 #include "res.h"
 #include <winuser.h>
 #include <math.h>
-#include <boost/math/constants/constants.hpp>
-#include <cstdio>
-#include "game_data.h"
+
 #include "note_player.h"
 
 #pragma comment(lib,"winmm.lib")
@@ -37,8 +35,8 @@
 #define FB 493.883
 NotePlayer note_player;
 void InitControls(HWND hwnd_main_window);
-
-
+std::string notes = { "G0;G0;G0;D#0;A#1;G0;D#0;A#1;G0;D1;D1;D1;D#1;A#1;F#0;D#0;A#1;G0;G1;G0;G0;G1;F#1;F1;E1;D#1;E1;G#0;C#1;C1;H1;A#1;A0;A#1;D#0;F#0;D#0;F#0;A#1;G0;A#1;D1" };
+std::string rythms = { "4;4;4;6;16;4;6;16;2;4;4;4;6;16;4;6;16;2;4;6;16;4;6;16;16;16;4;8;4;6;16;16;16;4;8;4;6;16;4;6;16;2" };
 
 INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -59,13 +57,13 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
         auto hwnd_edit_rythm = GetDlgItem(hwndDlg, IDC_EDIT_RYTHM);
       //  int value;
         INT text_length = GetWindowTextLength(hwnd_edit_notes);
-        CHAR notes[500];
-        CHAR rythm[500];
-        GetWindowText(hwnd_edit_notes, notes, text_length + 1);
-        text_length = GetWindowTextLength(hwnd_edit_rythm);
-        GetWindowText(hwnd_edit_rythm, rythm, text_length + 1);
-        note_player.PlayMelody(notes, rythm, 120);
-
+     //   CHAR notes[500];
+      //  CHAR rythm[500];
+     //   GetWindowText(hwnd_edit_notes, notes, text_length + 1);
+     //   text_length = GetWindowTextLength(hwnd_edit_rythm);
+    //    GetWindowText(hwnd_edit_rythm, rythm, text_length + 1);
+      //  note_player.PlayMelody(notes, rythm, 120);
+        note_player.PlayMelody(notes,rythms , 100);
         return TRUE;
       }
 
