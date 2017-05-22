@@ -2,13 +2,52 @@
 #include <cstdio>
 
 
+void BindBoardTexture(int iWidth, int iHeight)
+{
+  pMyImage = ReadBmpFromFile("..\\res\\tekstura_planszy.bmp", iWidth, iHeight);
+
+  glActiveTexture(GL_TEXTURE);
+  glBindTexture(GL_TEXTURE_2D, gl_game_paint.textures.textures_id[0]);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, iWidth, iHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, pMyImage);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+}
+
+void InitTextures()
+{
+
+  int iWidth=0;
+  int iHeight=0;
+  //texture board
+  glGenTextures(gl_game_paint.textures.count, gl_game_paint.textures.textures_id);
+   BindBoardTexture(iWidth, iHeight);
+   pMyImage = ReadBmpFromFile("..\\res\\tekstura_circle.bmp", iWidth, iHeight);
+ // glGenTextures(1, &gl_game_paint.textures.circle);
+  glActiveTexture(GL_TEXTURE+1);
+  glBindTexture(GL_TEXTURE_2D, gl_game_paint.textures.textures_id[1]);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,iWidth, iHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, pMyImage);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+  pMyImage = ReadBmpFromFile("..\\res\\tekstura_cross.bmp", iWidth, iHeight);
+  // glGenTextures(1, &gl_game_paint.textures.circle);
+  glActiveTexture(GL_TEXTURE + 2);
+  glBindTexture(GL_TEXTURE_2D, gl_game_paint.textures.textures_id[2]);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, iWidth, iHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, pMyImage);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+  delete[] pMyImage;
+}
+
 void InitGlPaint(HWND hwnd)
 {
-  gl_game_paint = GlPaint();
-
-  int iWidth;
-  int iHeight;
-  unsigned char* pMyImage = ReadBmpFromFile("..\\res\\tekstura_planszy.bmp", iWidth, iHeight);
   //Stworzyæ maszynê stanu
   static PIXELFORMATDESCRIPTOR pfd = {
     sizeof(PIXELFORMATDESCRIPTOR), //rozmiar
@@ -38,17 +77,9 @@ void InitGlPaint(HWND hwnd)
   //tworzymy maszynê stanu
   gl_game_paint.hRc = wglCreateContext(gl_game_paint.hDc);
   wglMakeCurrent(gl_game_paint.hDc, gl_game_paint.hRc);
+  InitTextures();
 
 
-  glGenTextures(1, &idTexture);
-
-  glBindTexture(GL_TEXTURE_2D, idTexture);
-
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, iWidth, iHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, pMyImage);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  delete[] pMyImage;
 }
 
 
@@ -63,9 +94,7 @@ GLint DrawGLScene()
   glEnable(GL_TEXTURE_2D);
 
   glLoadIdentity();
-//  gluLookAt(0, x, z,
- //   0,x+lx, z + lz,
- //   0.0f, 1.0f, 0.0f);
+
   glTranslatef(0, 0, -300);
   glRotatef(0, 0, 0, 0);
 
@@ -76,7 +105,7 @@ GLint DrawGLScene()
 
 void DrawCube(int xmin, int xmax, int ymin, int ymax, int zmin, int zmax, int r, int g, int b)
 {
-  glColor3d(r, g, b);
+ // glColor3d(r, g, b);
   glNormal3d(0, -1, 0);
   glTexCoord2f(0.0, 0.0); glVertex3d(xmin, ymin, zmin);
   glTexCoord2f(0.0, 1.0); glVertex3d(xmin, ymin, zmax);
@@ -117,7 +146,8 @@ void DrawCube(int xmin, int xmax, int ymin, int ymax, int zmin, int zmax, int r,
 
 void DrawSide(int xmin, int xmax, int ymin, int ymax, int zmin, int zmax, int r, int g, int b)
 {
-  glColor3d(r, g, b);
+ // glColor3d(r, g, b);
+
 
   glVertex3d(xmin, ymin, zmax);
   glVertex3d(xmax, ymax, zmax);
@@ -130,8 +160,11 @@ void DrawSide(int xmin, int xmax, int ymin, int ymax, int zmin, int zmax, int r,
 
 void glDrawBoard()
 {
+  glActiveTexture(GL_TEXTURE);
+
   glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, idTexture);
+  glBindTexture(GL_TEXTURE_2D, gl_game_paint.textures.textures_id[0]);
+ // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 100, 200, 0, GL_RGB, GL_UNSIGNED_BYTE, pMyImage);
   //glColor3d(55, 30, 200);
   glBegin(GL_QUADS);
   DrawCube(-85, 85, -35, -25, -10, 0, 1, 1, 1);
@@ -144,13 +177,17 @@ void glDrawBoard()
 
 void glDrawX(int a, int b, int c)
 {
+  glActiveTexture(GL_TEXTURE);
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, gl_game_paint.textures.textures_id[2]);
+ 
   glBegin(GL_TRIANGLES);
  // a = b = c = 0;
 
 
   //front
   {
-    glColor3d(1, 0, 1);
+   // glColor3d(1, 0, 1);
     glNormal3d(1, 0, 0);
     glVertex3d(a + 5, b + 5, c - 0);
     glVertex3d(a + 15, b + 5, c - 0);
@@ -171,7 +208,7 @@ void glDrawX(int a, int b, int c)
 
   //ty³
   {
-    glColor3d(1, 1, 0);
+   // glColor3d(1, 1, 0);
     glNormal3d(-1, 0, 0);
     glVertex3d(a + 5, b + 5, c - 10);
     glVertex3d(a + 15, b + 5, c - 10);
@@ -192,7 +229,7 @@ void glDrawX(int a, int b, int c)
 
   //dó³
   {
-    glColor3d(0, 0, 1);
+  //  glColor3d(0, 0, 1);
 
     //lewy dol
     glNormal3d(0, -1, 0);
@@ -217,7 +254,7 @@ void glDrawX(int a, int b, int c)
   }
   //góra
   {
-    glColor3d(0, 0, 1);
+  //  glColor3d(0, 0, 1);
 
     //prawy dol
     glNormal3d(0, -1, 0);
@@ -242,7 +279,7 @@ void glDrawX(int a, int b, int c)
   }
   //boki
   {
-    glColor3d(0, 1, 1);
+   // glColor3d(0, 1, 1);
 
     //1
     glNormal3d(-1, 1, 0);
@@ -408,10 +445,14 @@ unsigned char* ReadBmpFromFile(char* szFileName, int& riWidth, int& riHeight)
 
 void glDrawO(int a, int b, int c)
 {
+  glActiveTexture(GL_TEXTURE+1);
+
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, gl_game_paint.textures.textures_id[1]);
   glBegin(GL_TRIANGLES);
   //przód
   {
-    glColor3d(1, 1, 0);
+   // glColor3d(1, 1, 0);
 
     //lewy
     glVertex3d(a + 5, b + 16, c + 0);
@@ -471,7 +512,7 @@ void glDrawO(int a, int b, int c)
   }
   //ty³
   {
-    glColor3d(0, 1, 1);
+   // glColor3d(0, 1, 1);
 
     //lewy
     glVertex3d(a + 5, b + 16, c - 10);

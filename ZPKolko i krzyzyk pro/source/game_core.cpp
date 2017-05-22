@@ -346,8 +346,10 @@ int CheckResults()
   {
     result = CROSS_WON;
   }
-  CheckForDraw(result);
-
+  if (result == NO_RESULT)
+  {
+    CheckForDraw(result);
+  }
   return result;
 }
 

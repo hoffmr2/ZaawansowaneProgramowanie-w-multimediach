@@ -3,17 +3,32 @@
 #include <Windows.h>
 #include <gl\gl.h>
 #include <gl\glu.h>
-
+#include <glext.h>
 #pragma comment (lib,"opengl32.lib")
 #pragma comment (lib,"glu32.lib")
+#define GL_GLEXT_PROTOTYPES
+
+
+
+struct Textures
+{
+  static const GLuint count = 4;
+  GLuint board;
+  GLuint circle;
+  GLuint cross;
+  GLuint background;
+  GLuint textures_id[count];
+
+  Textures() { background = 0; board = 0; circle = 0; cross = 0; }
+};
 
 struct GlPaint
 {
   HDC hDc;
-  GLuint idTexture;
   HGLRC hRc;
+  Textures textures;
 
-  GlPaint() { idTexture = 0; hRc = NULL; hDc = NULL; }
+  GlPaint() { hRc = NULL; hDc = NULL;  }
 };
 
 struct Button
@@ -26,7 +41,8 @@ struct Button
 
 _declspec(selectany) GlPaint gl_game_paint;
 _declspec(selectany) Button start_button;
-_declspec(selectany) GLuint idTexture;
+
+_declspec(selectany) unsigned char* pMyImage;
 
 // angle of rotation for the camera direction
 _declspec(selectany) float board_rotate_angle = 0.0;
@@ -35,6 +51,7 @@ _declspec(selectany) float lx = 0.0f, lz = -1.0f;
 // XZ position of the camera
 _declspec(selectany) float x = 0.0f, z = 1.0f;
 //Init 
+void InitTextures();
 void InitGlPaint(HWND hwnd);
 
 

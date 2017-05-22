@@ -16,7 +16,7 @@ __declspec(selectany) bool is_game_on = false;
 __declspec(selectany) bool is_player_cross = true;
 __declspec(selectany) bool game_result = false;
 __declspec(selectany) bool has_cross_started = false;
-
+__declspec(selectany) bool is_game_vs_computer = false;
 //Init
 void InitGameTable();
 void InitGameVars();
